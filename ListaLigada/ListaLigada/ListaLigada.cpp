@@ -73,7 +73,7 @@ void menu()
 void inicializar()
 {
 
-	// se a lista já possuir elementos
+	// se a lista ja possuir elementos
 	// libera a memoria ocupada
 	NO* aux = primeiro;
 	while (aux != NULL) {
@@ -127,6 +127,15 @@ void inserirElemento()
 	cout << "Digite o elemento: ";
 	cin >> novo->valor;
 	novo->prox = NULL;
+// verifica se o valor jÃ¡ existe na lista
+	NO* aux = primeiro;
+	while (aux != NULL) {
+		if (aux->valor == novo->valor) {
+			cout << "Valor duplicado. Digite um valor diferente." << endl;
+			return;
+		}
+		aux = aux->prox;
+	}
 
 	if (primeiro == NULL)
 	{
@@ -134,6 +143,7 @@ void inserirElemento()
 	}
 	else
 	{
+
 		// procura o final da lista
 		NO* aux = primeiro;
 		while (aux->prox != NULL) {
@@ -144,19 +154,53 @@ void inserirElemento()
 }
 
 void excluirElemento()
-{
+{ int valor;
+    cout << "Digite o valor a ser excluido: ";
+    cin >> valor;
+
+    NO* anterior = NULL;
+    NO* atual = primeiro;
+
+    while (atual != NULL) {
+        if (atual->valor == valor) {
+			//se necessario excluir o primeiro elmento 
+            if (anterior == NULL) { 
+				
+                primeiro = atual->prox;
+            }
+            else {
+                anterior->prox = atual->prox;
+            }
+            free(atual); //remove o elemento da memorioa alocada 'malloc' permitindo ser excluido.
+            cout << "Elemento " << valor << " excluido com sucesso." << endl;
+            return;
+        }
+        anterior = atual;
+        atual = atual->prox;
+    }
+
+    cout << "Elemento " << valor << " nao encontrado na lista." << endl;
 	
 }
 
 void buscarElemento()
 {
+	int valor;
+    cout << "Digite o valor a ser buscado: ";
+    cin >> valor;
+
+    NO* encontrado = posicaoElemento(valor);
+    if (encontrado != NULL)
+    {
+        cout << "O valor " << valor << " foi encontrado na lista." << endl;
+    }
+    else
+    {
+        cout << "O valor " << valor << " nao foi encontrado na lista." << endl;
+    }
 	
 }
 
-
-
-// retorna um ponteiro para o elemento buscado
-// ou NULL se o elemento não estiver na lista
 NO* posicaoElemento(int numero)
 {
 	NO* aux = primeiro;
